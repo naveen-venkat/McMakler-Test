@@ -1,0 +1,443 @@
+swagger: '2.0'
+
+info:
+  x-ibm-name: mcmakler-test
+  version: 1.0.0
+  title: McMakler-Test
+
+schemes:
+  - https
+host: $(catalog.host)
+basePath: /api
+
+consumes:
+  - application/json
+produces:
+  - application/json
+
+securityDefinitions:
+ clientIdHeader:
+   type: apiKey
+   in: header
+   name: X-IBM-Client-Id
+ clientSecretHeader:
+   in: "header"
+   name: "X-IBM-Client-Secret"
+   type: "apiKey"
+
+
+security:
+ -
+   clientIdHeader: []
+   clientSecretHeader: []
+
+x-ibm-configuration:
+  testable: true
+  enforced: true
+  cors:
+    enabled: true
+  catalogs:
+    apic-dev:
+      properties:
+        runtime-url: $(TARGET_URL)
+    sb:
+      properties:
+        runtime-url: 'http://localhost:4001'
+  assembly:
+    execute:
+      - invoke:
+          target-url: $(runtime-url)$(request.path)$(request.search)
+
+paths:
+  /neos:
+    post:
+      tags:
+        - Neo
+      summary: Create a new instance of the model and persist it into the data source.
+      operationId: Neo.create
+      parameters:
+        - name: data
+          in: body
+          description: Model instance data
+          required: false
+          schema:
+            description: Model instance data
+            $ref: '#/definitions/Neo'
+      responses:
+        '200':
+          description: Request was successful
+          schema:
+            $ref: '#/definitions/Neo'
+      deprecated: false
+    patch:
+      tags:
+        - Neo
+      summary: Patch an existing model instance or insert a new one into the data source.
+      operationId: Neo.patchOrCreate
+      parameters:
+        - name: data
+          in: body
+          description: Model instance data
+          required: false
+          schema:
+            description: Model instance data
+            $ref: '#/definitions/Neo'
+      responses:
+        '200':
+          description: Request was successful
+          schema:
+            $ref: '#/definitions/Neo'
+      deprecated: false
+    put:
+      tags:
+        - Neo
+      summary: Replace an existing model instance or insert a new one into the data source.
+      operationId: Neo.replaceOrCreate__put_neos
+      parameters:
+        - name: data
+          in: body
+          description: Model instance data
+          required: false
+          schema:
+            description: Model instance data
+            $ref: '#/definitions/Neo'
+      responses:
+        '200':
+          description: Request was successful
+          schema:
+            $ref: '#/definitions/Neo'
+      deprecated: false
+    get:
+      tags:
+        - Neo
+      summary: Find all instances of the model matched by filter from the data source.
+      operationId: Neo.find
+      parameters:
+        - name: filter
+          in: query
+          description: 'Filter defining fields, where, include, order, offset, and limit - must be a JSON-encoded string ({"something":"value"})'
+          required: false
+          type: string
+          format: JSON
+      responses:
+        '200':
+          description: Request was successful
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Neo'
+      deprecated: false
+  /neos/replaceOrCreate:
+    post:
+      tags:
+        - Neo
+      summary: Replace an existing model instance or insert a new one into the data source.
+      operationId: Neo.replaceOrCreate__post_neos_replaceOrCreate
+      parameters:
+        - name: data
+          in: body
+          description: Model instance data
+          required: false
+          schema:
+            description: Model instance data
+            $ref: '#/definitions/Neo'
+      responses:
+        '200':
+          description: Request was successful
+          schema:
+            $ref: '#/definitions/Neo'
+      deprecated: false
+  /neos/upsertWithWhere:
+    post:
+      tags:
+        - Neo
+      summary: Update an existing model instance or insert a new one into the data source based on the where criteria.
+      operationId: Neo.upsertWithWhere
+      parameters:
+        - name: where
+          in: query
+          description: Criteria to match model instances
+          required: false
+          type: string
+          format: JSON
+        - name: data
+          in: body
+          description: An object of model property name/value pairs
+          required: false
+          schema:
+            description: An object of model property name/value pairs
+            $ref: '#/definitions/Neo'
+      responses:
+        '200':
+          description: Request was successful
+          schema:
+            $ref: '#/definitions/Neo'
+      deprecated: false
+  '/neos/{id}/exists':
+    get:
+      tags:
+        - Neo
+      summary: Check whether a model instance exists in the data source.
+      operationId: 'Neo.exists__get_neos_{id}_exists'
+      parameters:
+        - name: id
+          in: path
+          description: Model id
+          required: true
+          type: string
+          format: JSON
+      responses:
+        '200':
+          description: Request was successful
+          schema:
+            type: object
+            properties:
+              exists:
+                type: boolean
+      deprecated: false
+  '/neos/{id}':
+    head:
+      tags:
+        - Neo
+      summary: Check whether a model instance exists in the data source.
+      operationId: 'Neo.exists__head_neos_{id}'
+      parameters:
+        - name: id
+          in: path
+          description: Model id
+          required: true
+          type: string
+          format: JSON
+      responses:
+        '200':
+          description: Request was successful
+          schema:
+            type: object
+            properties:
+              exists:
+                type: boolean
+      deprecated: false
+    get:
+      tags:
+        - Neo
+      summary: 'Find a model instance by {{id}} from the data source.'
+      operationId: Neo.findById
+      parameters:
+        - name: id
+          in: path
+          description: Model id
+          required: true
+          type: string
+          format: JSON
+        - name: filter
+          in: query
+          description: 'Filter defining fields and include - must be a JSON-encoded string ({"something":"value"})'
+          required: false
+          type: string
+          format: JSON
+      responses:
+        '200':
+          description: Request was successful
+          schema:
+            $ref: '#/definitions/Neo'
+      deprecated: false
+    put:
+      tags:
+        - Neo
+      summary: Replace attributes for a model instance and persist it into the data source.
+      operationId: 'Neo.replaceById__put_neos_{id}'
+      parameters:
+        - name: id
+          in: path
+          description: Model id
+          required: true
+          type: string
+          format: JSON
+        - name: data
+          in: body
+          description: Model instance data
+          required: false
+          schema:
+            description: Model instance data
+            $ref: '#/definitions/Neo'
+      responses:
+        '200':
+          description: Request was successful
+          schema:
+            $ref: '#/definitions/Neo'
+      deprecated: false
+    delete:
+      tags:
+        - Neo
+      summary: 'Delete a model instance by {{id}} from the data source.'
+      operationId: Neo.deleteById
+      parameters:
+        - name: id
+          in: path
+          description: Model id
+          required: true
+          type: string
+          format: JSON
+      responses:
+        '200':
+          description: Request was successful
+          schema:
+            type: object
+      deprecated: false
+    patch:
+      tags:
+        - Neo
+      summary: Patch attributes for a model instance and persist it into the data source.
+      operationId: Neo.prototype.patchAttributes
+      parameters:
+        - name: data
+          in: body
+          description: An object of model property name/value pairs
+          required: false
+          schema:
+            description: An object of model property name/value pairs
+            $ref: '#/definitions/Neo'
+        - name: id
+          in: path
+          description: Neo id
+          required: true
+          type: string
+          format: JSON
+      responses:
+        '200':
+          description: Request was successful
+          schema:
+            $ref: '#/definitions/Neo'
+      deprecated: false
+  '/neos/{id}/replace':
+    post:
+      tags:
+        - Neo
+      summary: Replace attributes for a model instance and persist it into the data source.
+      operationId: 'Neo.replaceById__post_neos_{id}_replace'
+      parameters:
+        - name: id
+          in: path
+          description: Model id
+          required: true
+          type: string
+          format: JSON
+        - name: data
+          in: body
+          description: Model instance data
+          required: false
+          schema:
+            description: Model instance data
+            $ref: '#/definitions/Neo'
+      responses:
+        '200':
+          description: Request was successful
+          schema:
+            $ref: '#/definitions/Neo'
+      deprecated: false
+  /neos/findOne:
+    get:
+      tags:
+        - Neo
+      summary: Find first instance of the model matched by filter from the data source.
+      operationId: Neo.findOne
+      parameters:
+        - name: filter
+          in: query
+          description: 'Filter defining fields, where, include, order, offset, and limit - must be a JSON-encoded string ({"something":"value"})'
+          required: false
+          type: string
+          format: JSON
+      responses:
+        '200':
+          description: Request was successful
+          schema:
+            $ref: '#/definitions/Neo'
+      deprecated: false
+  /neos/update:
+    post:
+      tags:
+        - Neo
+      summary: 'Update instances of the model matched by {{where}} from the data source.'
+      operationId: Neo.updateAll
+      parameters:
+        - name: where
+          in: query
+          description: Criteria to match model instances
+          required: false
+          type: string
+          format: JSON
+        - name: data
+          in: body
+          description: An object of model property name/value pairs
+          required: false
+          schema:
+            description: An object of model property name/value pairs
+            $ref: '#/definitions/Neo'
+      responses:
+        '200':
+          description: Request was successful
+          schema:
+            description: Information related to the outcome of the operation
+            type: object
+            properties:
+              count:
+                description: The number of instances updated
+                type: number
+                format: double
+      deprecated: false
+  /neos/count:
+    get:
+      tags:
+        - Neo
+      summary: Count instances of the model matched by where from the data source.
+      operationId: Neo.count
+      parameters:
+        - name: where
+          in: query
+          description: Criteria to match model instances
+          required: false
+          type: string
+          format: JSON
+      responses:
+        '200':
+          description: Request was successful
+          schema:
+            type: object
+            properties:
+              count:
+                type: number
+                format: double
+      deprecated: false
+
+
+definitions:
+  Neo:
+    properties:
+      id:
+        $ref: '#/definitions/ObjectID'
+      name:
+        type: string
+      reference:
+        type: string
+      close_approach_date:
+        type: string
+        format: date-time
+      speed_kmph:
+        default: is_hazardous
+        type: string
+      is_hazardous:
+        type: boolean
+    required:
+      - name
+      - reference
+      - close_approach_date
+      - speed_kmph
+      - is_hazardous
+    additionalProperties: false
+  x-any:
+    properties: {}
+  ObjectID:
+    type: string
+    pattern: "^[a-fA-F\\d]{24}$"
+

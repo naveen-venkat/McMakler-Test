@@ -1,0 +1,40 @@
+{
+  "db": {
+    "name": "db",
+    "connector": "memory"
+  },
+  "NasaNeoRest": {
+    "name": "NasaNeoRest",
+    "baseURL": "https://api.nasa.gov/neo/rest/v1",
+    "crud": false,
+    "connector": "rest",
+    "options": {
+      "headers": {
+        "accept": "application/json",
+        "content-type": "application/json"
+      },
+      "query": {
+        "api_key": "N7LkblDsc5aen05FJqBQ8wU4qSdmsftwJagVK7UD"
+      }
+    },
+    "operations": [
+      {
+        "template": {
+          "method": "GET",
+          "url": "/feed",
+          "body": "{body:object}"
+        },
+        "functions": {
+          "heartBeat": []
+        }
+      }
+    ]
+  },
+  "MongoDBDS": {
+    "name": "MongoDBDS",
+    "connector": "mongodb",
+    "url": "mongodb://localhost:27017/nasa-neo",
+    "user": "nodejsUser",
+    "password": "d!45dg%4n"
+  }
+}

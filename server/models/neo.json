@@ -1,0 +1,124 @@
+{
+  "name": "Neo",
+  "plural": "neo",
+  "base": "PersistedModel",
+  "mongodb": {
+    "collection": "neo_feeds"
+  },
+  "properties": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "reference_id": {
+      "type": "string",
+      "required": true
+    },
+    "close_approach_date": {
+      "type": "date",
+      "required": true
+    },
+    "speed_kph": {
+      "type": "string",
+      "required": true
+    },
+    "is_hazardous": {
+      "type": "boolean",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {
+    "hazardous": {
+      "isStatic": true,
+      "accepts": [],
+      "returns": [{
+        "type": "Neo",
+        "root": true,
+        "description": "hazardous neos"
+      }],
+      "description": "Hazardous neo from the DB",
+      "http": [{
+        "path": "/hazardous",
+        "verb": "get"
+      }]
+    },
+    "fastest": {
+      "isStatic": true,
+      "accepts": [{
+        "arg": "hazardous",
+        "type": "string",
+        "description": "query for hazardous neos",
+        "http": {
+          "source": "query"
+        },
+        "default": "false",
+        "enum": [true, false]
+      }],
+      "returns": {
+        "type": "Neo",
+        "root": true,
+        "description": "hazardous neos"
+      },
+      "description": "Hazardous neo from the DB",
+      "http": [{
+        "path": "/fastest",
+        "verb": "get"
+      }]
+    },
+    "bestByYear": {
+      "isStatic": true,
+      "accepts": [{
+        "arg": "hazardous",
+        "type": "string",
+        "description": "query for most hazardous neos in a year",
+        "http": {
+          "source": "query"
+        },
+        "default": "false",
+        "enum": [true, false]
+      }],
+      "returns": {
+        "type": {
+          "close_approach_year": "string",
+          "count": "number"
+        },
+        "root": true,
+        "description": "hazardous neos"
+      },
+      "description": "Most Hazardous in a year",
+      "http": [{
+        "path": "/best-year",
+        "verb": "get"
+      }]
+    },
+    "bestByMonth": {
+      "isStatic": true,
+      "accepts": [{
+        "arg": "hazardous",
+        "type": "string",
+        "description": "query for most hazardous neos in a month",
+        "http": {
+          "source": "query"
+        },
+        "default": "false",
+        "enum": [true, false]
+      }],
+      "returns": {
+        "type": {
+          "close_approach_month": "string",
+          "count": "number"
+        },
+        "root": true,
+        "description": "hazardous neos"
+      },
+      "description": "Most Hazardous in a month",
+      "http": [{
+        "path": "/best-month",
+        "verb": "get"
+      }]
+    }
+  }
+}
